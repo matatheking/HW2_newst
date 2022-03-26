@@ -26,6 +26,10 @@ typedef struct WorkerList
 void printWorker(Worker* w, int format);
 Worker* createWorker();
 WorkerList* addWorker(WorkerList* head, Worker* w);
+int index(WorkerList* head, long id);
+int indexRe(WorkerList* head, long id);
+void update_worker(WorkerList* head, float present);
+void free_workers(WorkerList* head);
 
 
 
@@ -36,8 +40,8 @@ WorkerList* addWorker(WorkerList* head, Worker* w);
 
 
 void main() {
-	//	Worker* s;
-	//	s = createWorker();
+	Worker* s;
+	s = createWorker();
 	//	WorkerList* head = NULL;
 	//	//printWorker(s, 1);
 	//	WorkerList* lst;;
@@ -49,6 +53,12 @@ void main() {
 	//	}
 	//
 	//}
+	//s->id = 123123123;
+	WorkerList* head=NULL;
+	printWorker(s, 0);
+	WorkerList* lst;
+	lst = addWorker(head, s);
+	printf("%d", index(lst, 123123));
 }
 
 	Worker* createWorker() {
@@ -93,11 +103,11 @@ void main() {
 
 	
 	
-	WorkerList* addWorker (WorkerList * head, Worker * w)
+	WorkerList* addWorker (WorkerList* head, Worker* w)
 	{
 		WorkerList* new_node = (WorkerList*)calloc(1, sizeof(WorkerList));//pointer to a new 
-																	 // junction. 
-		if (new_node)
+															 // junction. 
+		if (!new_node)
 			exit(0);
 
 
@@ -143,9 +153,45 @@ void main() {
 		return head;
 
 	}
-
-
-
+	int index(WorkerList* head, long id) {
+		//if not found return -1 
+		//if found return index
+		int index = 0;
+		WorkerList* p = head;
+		while (p != NULL) {
+			if (p->data->id == id) return index;
+			index++;
+			p = p->next;
+		}
+		return -1;
+	}
+	int indexRe(WorkerList* head, long id) {
+		int index = 0;
+		WorkerList* p = head;
+		if (p->next==NULL) {
+			return -1;
+		}
+		if (p->data->id == id) {
+			return index;
+		}
+		index += indexRe(p->next, id);
+		return index;
+	}
+	void update_worker(WorkerList* head, float precent) {
+		WorkerList* p = head;
+		while (p->next!=NULL){
+			p->data->salary *= (1 + precent / 100);
+			p = p->next;
+		}
+	}
+	void free_workers(WorkerList* head) {
+		WorkerList* p=head->next;
+		while (head != NULL) {
+			free(*(head->data->name)); free(head);
+			head = p;
+			p = p->next;
+		}
+	}
 
 
 
