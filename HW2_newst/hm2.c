@@ -30,6 +30,8 @@ int index(WorkerList* head, long id);
 int indexRe(WorkerList* head, long id);
 void update_worker(WorkerList* head, float present);
 void free_workers(WorkerList* head);
+WorkerList* deleteWorstWorker(WorkerList* head);
+WorkerList* reverse(WorkerList* head);
 
 
 
@@ -191,6 +193,62 @@ void main() {
 			head = p;
 			p = p->next;
 		}
+	}
+
+
+
+
+
+
+	WorkerList* deleteWorstWorker(WorkerList* head)
+	{
+		
+		
+		
+		
+		
+		WorkerList* temp = (WorkerList*)calloc(1, sizeof(WorkerList));
+		if (temp == NULL)
+		{
+			exit(1);
+			
+		}
+
+		
+		int counter = 0;
+		while (head->next)
+		{
+			counter++;
+		}
+
+		int i = 0;
+		
+		while (i != counter - 1);
+		{
+			
+			if (i == counter-1)
+			{
+				temp->next = head->next;
+			
+				head->next = NULL;
+
+				free(temp) ;
+			}
+		
+		
+			i++;
+		}
+
+		return head;
+
+	}
+
+
+
+	WorkerList* reverse(WorkerList* head)
+	{
+
+
 	}
 
 
