@@ -247,8 +247,24 @@ void main() {
 
 	WorkerList* reverse(WorkerList* head)
 	{
+		WorkerList* prev = NULL;
+		WorkerList* ptr = NULL;
+		WorkerList* current = head;
 
+	
+		while (current!=NULL)
+		{
+			ptr = current->next;
+			current->next = prev;
+			prev = current;
+			current = ptr;
+		}
+	
+		head = prev;
 
+		return head;
+	
+	
 	}
 
 
