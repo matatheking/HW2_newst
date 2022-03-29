@@ -50,17 +50,19 @@ void main()
 
 		head = addWorker(head, w);
 	}
-	
+
 	printf("\n");
 	printf(" the list is :\n");
 	printAll(head);
-
+	printf("%d\n", index(head, 123123));
+	printf("%d\n", indexRe(head, 123123));
+	update_worker(head, 1.5);
 	head = reverse(head);
 	printf("\nreverse list is : \n");
 	printAll(head);
-
+	free_workers(head);
 	free(head);
-  
+
 
 }
 
@@ -146,7 +148,7 @@ WorkerList* addWorker(WorkerList* head, Worker* w)
 
 
 
-	
+
 
 	while (current != NULL && current->data->salary > new_node->data->salary)
 	{
@@ -178,27 +180,29 @@ int index(WorkerList* head, long id) {
 int indexRe(WorkerList* head, long id) {
 	int index = 0;
 	WorkerList* p = head;
-	if (p->next == NULL) {
+	if (p == NULL) {
 		return -1;
 	}
 	if (p->data->id == id) {
 		return index;
 	}
+	else index++;
 	index += indexRe(p->next, id);
 	return index;
 }
 void update_worker(WorkerList* head, float precent) {
 	WorkerList* p = head;
-	while (p->next != NULL) {
-		p->data->salary *= (1 + precent / 100);
+	while (p != NULL) {
+		p->data->salary += (p->data->salary / 100) * precent;
 		p = p->next;
 	}
 }
 void free_workers(WorkerList* head) {
 	WorkerList* p = head->next;
 	while (head != NULL) {
-		free(*(head->data->name)); free(head);
+		free(head->data);
 		head = p;
+		if (p == NULL) return;
 		p = p->next;
 	}
 }
@@ -210,7 +214,7 @@ void free_workers(WorkerList* head) {
 
 WorkerList* deleteWorstWorker(WorkerList* head)
 {
-	if (head ==NULL)
+	if (head == NULL)
 	{
 		return NULL;
 	}
@@ -218,14 +222,14 @@ WorkerList* deleteWorstWorker(WorkerList* head)
 	WorkerList* current = head;
 	WorkerList* scouter = current->next;
 
-	while (scouter!= NULL  )
+	while (scouter != NULL)
 	{
 		current = current->next;
 		scouter = current->next;
 	}
-	
+
 	free(scouter);
-	
+
 	return head;
 
 }
@@ -256,13 +260,13 @@ WorkerList* reverse(WorkerList* head)
 
 
 void printAll(WorkerList* head) {
-	
+
 	WorkerList* current = head;
 
 	while (current != NULL)
 	{
 		printWorker(current->data, 0);
-     
+
 		current = current->next;
 
 	}
