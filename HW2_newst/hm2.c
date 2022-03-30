@@ -44,7 +44,7 @@ void main()
 	Worker* w;
 	WorkerList* head = NULL;
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		w = createWorker();
 
@@ -56,13 +56,29 @@ void main()
 	printAll(head);
 	printf("%d\n", index(head, 123123));
 	printf("%d\n", indexRe(head, 123123));
+	
+	
+	
+
 	update_worker(head, 1.5);
+	printf("\nthe list after raising the salaries: is :\n");
+	printAll(head);
+
+
 	head = reverse(head);
 	printf("\nreverse list is : \n");
 	printAll(head);
+
+
+	head = deleteWorstWorker(head);
+	printf("\nlist after we fired the worst worker :\n");
+	printAll(head);
+	
+
+	
+
 	free_workers(head);
 	free(head);
-
 
 }
 
@@ -134,9 +150,6 @@ WorkerList* addWorker(WorkerList* head, Worker* w)
 
 
 	WorkerList* current = head;
-	WorkerList* scouter = current->next;
-
-
 
 
 	if (new_node->data->salary > current->data->salary)// if the new node bigger then the first node
@@ -147,18 +160,24 @@ WorkerList* addWorker(WorkerList* head, Worker* w)
 	}
 
 
+	WorkerList* prev =  NULL;
+	WorkerList* scouter = NULL;
 
 
 
-	while (current != NULL && current->data->salary > new_node->data->salary)
+	while (current!=NULL && current->data->salary >= new_node->data->salary)
 	{
+		prev = current;
 		current = current->next;
-		scouter = current->next;
+		
 	}
-
-	new_node->next = scouter;
-	current->next = new_node;
+	
+	
+	prev->next = new_node;
+	new_node->next = current;
+	
 	return head;
+	
 
 }
 
@@ -222,15 +241,23 @@ WorkerList* deleteWorstWorker(WorkerList* head)
 	WorkerList* current = head;
 	WorkerList* scouter = current->next;
 
-	while (scouter != NULL)
-	{
-		current = current->next;
-		scouter = current->next;
-	}
+	head = scouter;
 
-	free(scouter);
+	free(current);
 
 	return head;
+
+	/*while (scouter != NULL) // in case we didnt reversed the list. 
+	{
+		prev = current;
+		current = current->next;
+		scouter = current->next;
+
+	}
+	
+	free(prev->next);
+
+	return head;*/
 
 }
 
